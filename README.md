@@ -5,3 +5,5 @@ Calculates basic math operations
 - multiply
 - divide
 
+The function operate takes an operator and two numbers and calls
+the appropriate function of the above.
