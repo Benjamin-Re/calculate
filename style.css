@@ -1,3 +1,10 @@
+:root {
+    --case: #50394c;
+    --buttons: #b2b2b2;
+    --display: white;
+    --buttonsHover: #f4e1d2;
+}
+
 .container {
     width: 300px;
     padding: 50px;
@@ -5,9 +12,9 @@
     flex-wrap: wrap;
     align-content: flex-start;
     gap: 14px;
-    border: 2px solid darkslategray;
+    border: 2px solid var(--case);
     border-radius: 5px;
-    background-color: darkslategray;
+    background-color: var(--case);
 }
 
 .display {
@@ -22,6 +29,7 @@
     border-radius: 5px;
     padding: 0;
     margin: 0;
+    background-color: var(--display);
 }
 
 .middle {
@@ -35,9 +43,9 @@ button {
     border: none;
     padding: 15px 25px;
     width: 71.25px;
-    background-color: rgb(221, 221, 221);
+    background-color: var(--buttons);
 }
 
 button:hover {
-    background-color: honeydew;
+    background-color: var(--buttonsHover);
 }
