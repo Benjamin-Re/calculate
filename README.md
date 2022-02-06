@@ -1,4 +1,6 @@
 # calculate
+Live preview: https://benjamin-re.github.io/calculate/
+
 Calculates basic math operations
 - add
 - subtract
