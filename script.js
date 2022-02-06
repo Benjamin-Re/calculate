@@ -31,8 +31,12 @@ function operate(operator, a, b) {
             result = multiply(a, b);
             break;
         case '/':
-            result = divide(a, b);
-            break;
+            if(b === 0){
+                return result = "Can't divide by 0";
+            } else {
+                result = divide(a, b);
+                break;
+            }
     }
     return Math.floor(result*1000)/1000;
 }
@@ -45,44 +49,53 @@ let operator = "";
 let operatorClicked = false;
 let equalLocked = true;
 
-// Add Event listeners to the buttons
+// Add Event listeners to the NUMBER BUTTONS
 // Save the first number in a 
 // After the operator was clicked save the number in b
 let numbers = document.querySelectorAll(".number");
 numbers.forEach(num => {
     num.addEventListener("click", () => {
-        if (!operatorClicked) {
-            a += num.textContent;
-            display.textContent = a;
-        } else {
-            b += num.textContent;
-            display.textContent = b;
-            // If b was typed in we can unlock equals
-            equalLocked = false;
-        }
+        saveInput(num.textContent);
     })
 })
 
-// When an operator is clicked save a and the operator
+function saveInput(input){
+    console.log("click");
+    if (!operatorClicked) {
+        a += input;
+        display.textContent = a;
+    } else {
+        b += input;
+        display.textContent = b;
+        // If b was typed in we can unlock equals
+        equalLocked = false;
+    }
+}
+
+
+// When an operator is clicked save a and the OPERATOR BUTTONS
 let operators = document.querySelectorAll(".operator");
 operators.forEach(currentOperator => {
     currentOperator.addEventListener("click", () => {
-        if (!operatorClicked) {
-            // Save display value to a, in case this happens after the equal button was clicked
-            a = display.textContent;
-            operator = currentOperator.textContent;
-            operatorClicked = true;
-        } else {
-            // If the operator was clicked already it should function like equal 
-            equals();
-            a = display.textContent;
-            operator = currentOperator.textContent;
-            operatorClicked = true;
-        }
+        saveOperator(currentOperator.textContent);
     });
 })
 
-// When = clicked calculate with the appropriate method
+function saveOperator(input){
+    if (!operatorClicked) {
+        operator = input;
+        operatorClicked = true;
+    } else {
+        // If the operator was clicked already it should function like equal 
+        equals();
+        operator = input;
+        operatorClicked = true;
+    }
+}
+
+
+
+// When EQUAL clicked calculate with the appropriate method
 let equal = document.querySelector(".equal");
 equal.addEventListener("click", () => {
     equals();
@@ -95,11 +108,11 @@ function equals() {
         b = display.textContent;
         display.textContent = operate(operator, a, b);
         init();
-        equalLocked = true;
+        a = display.textContent;
     }
 }
 
-// When Clear is clicked all is reset
+// When CLEAR is clicked all is reset
 let clear = document.querySelector(".clear");
 clear.addEventListener("click", () => {
     init();
@@ -111,4 +124,47 @@ function init() {
     b = "";
     operator = "";
     operatorClicked = false;
+    equalLocked = true;
 }
+
+// DOT button event handler
+const dot = document.querySelector(".dot");
+dot.addEventListener("click", () => {
+    if (!operatorClicked) {
+        if(!(a.includes("."))){
+            a += ".";
+            display.textContent = a;
+        }
+    } else {
+        if(!(b.includes("."))){
+            b += ".";
+            display.textContent = b;
+        }
+    }
+})
+
+// Add BACKSPACE event handler
+const back = document.querySelector(".back");
+back.addEventListener("click", () => {
+    if(!operatorClicked){
+        a = a.slice(0, a.length-1);
+        display.textContent = a;
+    } else {
+        b = b.slice(0, b.length - 1);
+        display.textContent = b;
+    }
+})
+
+// KEYBOARD support
+document.addEventListener("keypress", (e) => {
+    if(/^[0-9]/.test(e.key)){
+        saveInput(e.key);
+    } else if(/^[-+*\/]/.test(e.key)){
+        saveOperator(e.key);
+    } else if(e.key === "Enter"){
+        equals();
+    } else if(e.key === "c"){
+        init();
+        display.textContent = "0";
+    }
+})
